@@ -45,7 +45,12 @@ export class BookingsService {
     private readonly rateLimit: RateLimitService,
   ) {}
 
-
+  /**
+   * POST /bookings
+   * Order: idempotent replay -> rate limit (every attempt with a usable email counts, failed ones
+   * included) -> body validation (400) -> slot exists (404) -> slot not started (400) ->
+   * insert, where the unique index decides (409).
+   */
   async create(body: unknown, idempotencyKey?: string): Promise<CreateResult> {
     if (idempotencyKey === undefined) return this.attempt(body);
 

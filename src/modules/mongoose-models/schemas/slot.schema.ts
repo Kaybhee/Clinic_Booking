@@ -1,7 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-
+/**
+ * A bookable appointment slot. The id is supplied by the client through POST /reset,
+ * so `_id` is a string. `startRaw` / `endRaw` keep the timestamps exactly as they were
+ * sent, because the API echoes them back unchanged; `start` / `end` are the parsed
+ * dates used for sorting and for the "already started" check.
+ */
 @Schema({ collection: 'slots', versionKey: false })
 export class Slot {
   @Prop({ type: String, required: true })
