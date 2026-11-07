@@ -1,5 +1,5 @@
 {
-  "name": "project-kalypto",
+  "name": "Clinic Booking",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@fastify/static": "^8.2.0",
-    "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -48,7 +47,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.1",
     "multer": "^1.4.5-lts.2",
-    "nodemailer": "^6.10.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
