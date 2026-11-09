@@ -11,6 +11,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './filters';
 import { SlotsModule } from './modules/slots/slots.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
+import { KeepAliveService } from './shared/services/keep.alive.services';
 
 dotenv.config();
 @Module({
@@ -38,6 +39,9 @@ dotenv.config();
     BookingsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_FILTER, useClass: AllExceptionsFilter }],
+  providers: [
+    AppService, 
+    KeepAliveService,
+    { provide: APP_FILTER, useClass: AllExceptionsFilter }],
 })
 export class AppModule {}
