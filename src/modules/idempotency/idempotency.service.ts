@@ -22,15 +22,7 @@ const canonical = (value: unknown): string => {
   return JSON.stringify(value);
 };
 
-/**
- * Makes retries safe. The first request with an Idempotency-Key "claims" it by inserting
- * a record (the key is the unique _id, so only one request can claim it). Retries then:
- *   - replay the stored response when the first request has finished,
- *   - wait for it when it is still running (simultaneous retries never race), or
- *   - get 422 when the same key arrives with a different body.
- * Only successful responses are stored; a failed attempt releases the key so the
- * client can fix the problem and retry with the same key.
- */
+
 @Injectable()
 export class IdempotencyService {
   constructor(@Inject(RepositoryTokens.IDEMPOTENCY) private readonly repo: BaseRepository<IdempotencyRecord>) {}

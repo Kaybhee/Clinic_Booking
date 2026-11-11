@@ -3,9 +3,6 @@ import { ClientSession, FilterQuery, Model, ProjectionType, QueryOptions, Update
 export class BaseRepository<T> {
   constructor(private readonly model: Model<T>) {}
 
-  // Centralized CRUD database operations for all entities, to avoid code duplication.
-  // Reads return plain objects (lean) so services never touch Mongoose documents.
-
   create(doc: Partial<T> | Record<string, unknown>, session?: ClientSession) {
     return this.model.create([doc], { session }).then(([created]) => created.toObject() as T);
   }

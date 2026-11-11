@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-/** Sliding-window log of booking attempts for one email address. */
 @Schema({ collection: 'rate_limits', versionKey: false })
 export class RateLimitWindow {
   /** The (normalised) email address. */

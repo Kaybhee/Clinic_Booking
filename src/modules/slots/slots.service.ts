@@ -26,14 +26,9 @@ export class SlotsService implements OnApplicationBootstrap {
     @Inject(RepositoryTokens.RATE_LIMIT) private readonly rateLimits: BaseRepository<RateLimitWindow>,
   ) {}
 
-  /**
-   * So the page is usable straight after deploying: if the database has no slots at all,
-   * create sample ones for the next 5 days. A POST /reset replaces them like any other slots.
-   * Turn off with SEED_DEMO_SLOTS=false.
-   */
   async onApplicationBootstrap() {
     if (process.env.SEED_DEMO_SLOTS === 'false') return;
-    if ((await this.slots.countDocuments({})) > 0) return;
+    if ((await this.slots.countDocuments({ start: { $gt: new Date() } })) > 0) return;
 
     const doctors = ['Dr Ade', 'Dr Bello', 'Dr Chika'];
     const hoursUtc = [8, 9, 10, 13, 14];
@@ -51,10 +46,9 @@ export class SlotsService implements OnApplicationBootstrap {
       }
     }
     await this.slots.insertMany(rows).catch((e) => this.logger.warn(`demo slots not created: ${e?.message}`));
-    this.logger.log(`Created ${rows.length} sample slots (database had none).`);
+    this.logger.log(`Created ${rows.length} sample slots because no future slots were available.`);
   }
 
-  /** POST /reset: deletes every booking and replaces all slots (past slots included). */
   async reset(body: unknown): Promise<{ slots: number }> {
     const input = validateReset(body);
 
@@ -72,7 +66,6 @@ export class SlotsService implements OnApplicationBootstrap {
     return { slots: input.length };
   }
 
-  /** GET /slots: earliest first, optional exact-match provider filter, each with `available`. */
   async list(provider?: string): Promise<SlotView[]> {
     const filter = provider ? { provider } : {};
     const slots = await this.slots.find(filter, { sort: { start: 1, _id: 1 } });
