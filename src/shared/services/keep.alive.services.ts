@@ -32,7 +32,7 @@ export class KeepAliveService {
       const responseTime = Date.now() - startTime;
 
       this.logger.log(`Server ping successful - Status: ${response.status}, Response time: ${responseTime}ms`);
-    } catch (error) {
+    } catch (error: any) {
       this.logger.error(`Failed to ping server at ${this.pingUrl}: ${error.message}`, error.stack);
     }
   }

@@ -12,6 +12,7 @@ import { AllExceptionsFilter } from './filters';
 import { SlotsModule } from './modules/slots/slots.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { KeepAliveService } from './shared/services/keep.alive.services';
+import { HttpModule } from '@nestjs/axios';
 
 dotenv.config();
 @Module({
@@ -35,6 +36,7 @@ dotenv.config();
       inject: [ConfigService],
     }),
     // Application Modules Go Here
+    HttpModule,
     SlotsModule,
     BookingsModule,
   ],
