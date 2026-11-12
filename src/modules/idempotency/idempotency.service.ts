@@ -47,7 +47,6 @@ export class IdempotencyService {
       if (existing.bodyHash !== bodyHash) throw ApiException.IDEMPOTENCY_KEY_REUSED();
       if (existing.state === 'done') return { kind: 'replay', status: existing.status as number, body: existing.response as Record<string, unknown> };
 
-      // Still processing: another request holds the key.
       const age = Date.now() - new Date(existing.createdAt).getTime();
       if (age > STALE_AFTER_MS) {
         // The original request must have died; take the key over.
